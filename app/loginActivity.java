@@ -1,0 +1,2 @@
+public class loginActivity {
+}

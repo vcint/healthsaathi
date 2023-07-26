@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "201921462256",
+    "project_id": "healthsaathi23",
+    "storage_bucket": "healthsaathi23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201921462256:android:3cf6ea41baedd4ba2fe735",
+        "android_client_info": {
+          "package_name": "com.vinaychitade.rsm.myhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201921462256-4v7q85j7d994a9s68p066ijipjogv1a5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyP9Uq0k0kOY18EG4mSi-MgHsxtXii71U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201921462256-4v7q85j7d994a9s68p066ijipjogv1a5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
