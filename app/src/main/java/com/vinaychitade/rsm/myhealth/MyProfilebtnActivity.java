@@ -63,8 +63,10 @@ public class MyProfilebtnActivity extends AppCompatActivity {
         btnmyordr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myordr=new Intent(MyProfilebtnActivity.this,MyordrActivity.class);
-                startActivity(myordr);
+                //Intent myordr=new Intent(MyProfilebtnActivity.this,MyordrActivity.class);
+                // startActivity(myordr);
+                Intent myordr=new Intent(MyProfilebtnActivity.this,loginActivity.class);
+                 startActivity(myordr);
                 finish();
 
             }

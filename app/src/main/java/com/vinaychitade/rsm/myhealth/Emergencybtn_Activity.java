@@ -36,7 +36,7 @@ public class Emergencybtn_Activity extends AppCompatActivity {
 
     private static final String TAG = "Emergencybtn_Activity";
     int PERMISSION_ID = 44;
-    String phoneNo="+919022968010";
+    String phoneNo="+917972791880";
     String message;
     String mapurl="https://www.google.com/maps/search/?api=1&query=";
 

@@ -15,7 +15,7 @@ public class dispatchedAmbulance extends AppCompatActivity {
         setContentView(R.layout.activity_dispatched_ambulance);
         Toast.makeText(this, "Calling Doctor", Toast.LENGTH_SHORT).show();
 
-        dialPhoneNumber("+919022968010");
+        dialPhoneNumber("+917972791880");
         Intent tomain=new Intent(dispatchedAmbulance.this,MainActivity.class);
         try {
 

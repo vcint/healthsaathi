@@ -38,7 +38,7 @@ public class CalldoctorActivity extends AppCompatActivity {
             }
         });
         Toast.makeText(this, "Calling Doctor", Toast.LENGTH_SHORT).show();
-        dialPhoneNumber("+919022968010");
+        dialPhoneNumber("+917972791880");
 
     }
 
