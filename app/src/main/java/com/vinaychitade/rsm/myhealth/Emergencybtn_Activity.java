@@ -32,7 +32,7 @@ import com.google.android.gms.tasks.Task;
 public class Emergencybtn_Activity extends AppCompatActivity {
      FusedLocationProviderClient mFusedLocationClient;
 
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
+    static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
     private static final String TAG = "Emergencybtn_Activity";
     int PERMISSION_ID = 44;

@@ -1,9 +1,17 @@
 package com.vinaychitade.rsm.myhealth;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.vinaychitade.rsm.myhealth.Emergencybtn_Activity.MY_PERMISSIONS_REQUEST_SEND_SMS;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -16,6 +24,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.library.permission_handler.PermissionHandler;
+import com.library.permission_handler.PermissionsHandler;
+
+import java.security.Permission;
+import java.util.ArrayList;
+
 
 public class loginActivity extends AppCompatActivity {
 
@@ -29,6 +43,28 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btnlogin = findViewById(R.id.btnlogin);
+
+        String[] permissions = {android.Manifest.permission.CALL_PHONE, android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA};
+        String rationale = "Please provide permission for the App to work normally.";
+        PermissionsHandler.Options options = new PermissionsHandler.Options()
+                .setRationaleDialogTitle("Info")
+                .setSettingsDialogTitle("Warning");
+
+        PermissionsHandler.requestPermission(this,permissions, rationale, options, new PermissionHandler() {
+            @Override
+            public void onPermissionGranted() {
+                 Toast.makeText(loginActivity.this, "Permissions granted.", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onPermissionDenied(Context context, ArrayList<String> deniedPermissions) {
+                Toast.makeText(loginActivity.this, "Permission denied.", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
+
+
         btnlogin.setOnClickListener(view -> onGoogleSignInClick());
 
         Toast.makeText(this, "Sign in With Google To Continue", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.vinaychitade.rsm.myhealth"
-        minSdk 21
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -67,6 +67,8 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-database'
 
+    //permission handler
+    implementation 'com.github.vinodbaste:permission_handler:1.0.0'
 
 
 
