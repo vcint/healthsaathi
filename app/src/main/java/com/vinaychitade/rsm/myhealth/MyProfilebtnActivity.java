@@ -4,16 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.vinaychitade.rsm.myhealth.R.id;
 
 public class MyProfilebtnActivity extends AppCompatActivity {
-    Button btnedtprof,btnmyordr,btnabtus;
-    ImageView imageView2,imageView3,imageView4;
+    Button btnedtprof,btnmyordr,btnabtus,profToHomeBtn;
+    ImageView imageView2,imageView3,imageView4,profileImageView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,6 +31,37 @@ public class MyProfilebtnActivity extends AppCompatActivity {
         btnedtprof=findViewById(R.id.btnedtprof);
         btnmyordr=findViewById(id.btnmyordr);
         btnabtus=findViewById(id.btnabtus);
+        profToHomeBtn=findViewById(id.profToHomeBtn);
+        profileImageView = findViewById(id.usericon1);
+
+        // Get the current user from FirebaseAuth
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null) {
+            // Get the user's profile photo URL
+            Uri photoUrl = currentUser.getPhotoUrl();
+
+            if (photoUrl != null) {
+                // Use Picasso (or any other image loading library) to load and display the image
+                Picasso.get().load(photoUrl.toString()).into(profileImageView);
+            } else {
+                // If the user does not have a profile photo, you can set a default image or hide the ImageView
+                profileImageView.setImageResource(R.drawable.useract);
+            }
+        }else {
+            // If the user is not logged in, you can set a default image or hide the ImageView
+            profileImageView.setImageResource(R.drawable.useract);
+        }
+
+        ////
+        profToHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gohome=new Intent(MyProfilebtnActivity.this,MainActivity.class);
+                startActivity(gohome);
+                finish();
+            }
+        });
 
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override

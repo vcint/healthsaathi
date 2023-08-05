@@ -44,7 +44,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         btnlogin = findViewById(R.id.btnlogin);
 
-        String[] permissions = {android.Manifest.permission.CALL_PHONE, android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA};
+        String[] permissions = {android.Manifest.permission.CALL_PHONE, android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA, Manifest.permission.ACCESS_MEDIA_LOCATION};
         String rationale = "Please provide permission for the App to work normally.";
         PermissionsHandler.Options options = new PermissionsHandler.Options()
                 .setRationaleDialogTitle("Info")
