@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     implementation("com.google.firebase:firebase-firestore")
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
 
     //permission handler
     implementation 'com.github.vinodbaste:permission_handler:1.0.0'

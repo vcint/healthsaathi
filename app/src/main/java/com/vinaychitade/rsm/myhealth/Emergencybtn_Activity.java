@@ -47,8 +47,6 @@ public class Emergencybtn_Activity extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-
-
     }
 
     @SuppressLint("MissingPermission")
@@ -59,10 +57,6 @@ public class Emergencybtn_Activity extends AppCompatActivity {
             // check if location is enabled
             if (isLocationEnabled()) {
 
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
@@ -70,19 +64,7 @@ public class Emergencybtn_Activity extends AppCompatActivity {
                         if (location == null) {
                             requestNewLocationData();
                         } else {
-                          double  lat=location.getLongitude();
-                           double lon=location.getLatitude();
 
-
-                            mapurl=mapurl+lon+","+lat;
-                            message=mapurl;
-                            //onComplete method above
-                           sendSMSMessage();
-                            Intent todispambulance=new Intent(Emergencybtn_Activity.this,dispatchedAmbulance.class);
-                            startActivity(todispambulance);
-                            finish();
-
-                            //oncomplete method below
                         }
                     }
                 });
@@ -108,7 +90,6 @@ public class Emergencybtn_Activity extends AppCompatActivity {
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
-
         // setting LocationRequest
         // on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -120,27 +101,37 @@ public class Emergencybtn_Activity extends AppCompatActivity {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
+            if (mLastLocation != null) {
+                double lat = mLastLocation.getLatitude();
+                double lon = mLastLocation.getLongitude();
+                mapurl = mapurl + lon + "," + lat;
+                message = mapurl;
+
+                // Send the SMS message with the user's location
+                sendSMSMessage();
+
+                // Start the dispatchedAmbulance activity (optional)
+                Intent todispambulance = new Intent(Emergencybtn_Activity.this, dispatchedAmbulance.class);
+                startActivity(todispambulance);
+                finish();
+            }
         }
     };
 
     // method to check for permissions
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
     }
-
     // method to request for permissions
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
+                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.SEND_SMS}
+                , PERMISSION_ID);
 
     }
-
     // method to check
     // if location is enabled
     private boolean isLocationEnabled() {
@@ -150,13 +141,15 @@ public class Emergencybtn_Activity extends AppCompatActivity {
 
     // If everything is alright then
     @Override
-    public void
-    onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
+            } else {
+                // Handle permission denied case (optional)
+                Toast.makeText(this, "Permission denied. Cannot send SMS.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -168,28 +161,16 @@ public class Emergencybtn_Activity extends AppCompatActivity {
             getLastLocation();
         }
     }
-
-
     //sms sending permission check
 
     synchronized protected void sendSMSMessage() {
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNo, null, message, null, null);
-
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-
-
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
+        if (checkPermissions()) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, message, null, null);
+        } else {
+            // Request permissions if not granted
+            requestPermissions();
         }
 
     }

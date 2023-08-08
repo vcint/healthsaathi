@@ -30,7 +30,9 @@
         android:text="Edit Profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usericon1" />
+        app:layout_constraintTop_toBottomOf="@+id/usericon1"
+        android:visibility="invisible"
+        />
 
     <Button
         android:id="@+id/btnmyordr"
@@ -149,5 +151,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.11"
         />
+
+    <TextView
+        android:id="@+id/txtvuser"
+        android:layout_width="179dp"
+        android:layout_height="42dp"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnedtprof"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usericon1"
+        app:layout_constraintVertical_bias="0.44" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

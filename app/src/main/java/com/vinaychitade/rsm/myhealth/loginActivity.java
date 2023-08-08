@@ -44,7 +44,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         btnlogin = findViewById(R.id.btnlogin);
 
-        String[] permissions = {android.Manifest.permission.CALL_PHONE, android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA, Manifest.permission.ACCESS_MEDIA_LOCATION};
+        String[] permissions = {android.Manifest.permission.CALL_PHONE, android.Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CAMERA};
         String rationale = "Please provide permission for the App to work normally.";
         PermissionsHandler.Options options = new PermissionsHandler.Options()
                 .setRationaleDialogTitle("Info")
@@ -61,14 +61,9 @@ public class loginActivity extends AppCompatActivity {
             }
 
         });
-
-
-
-
         btnlogin.setOnClickListener(view -> onGoogleSignInClick());
 
         Toast.makeText(this, "Sign in With Google To Continue", Toast.LENGTH_SHORT).show();
-
 
         // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -105,7 +100,7 @@ public class loginActivity extends AppCompatActivity {
 
 
         } catch (ApiException e) {
-            // Google Sign-In failed, handle the error (e.g., display error message)
+            // Google Sign-In failed,
             Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
         }
     }
@@ -116,14 +111,12 @@ public class loginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Firebase Authentication successful, proceed to the next screen
-                        // You can store the user credentials (e.g., UID and token) securely here
-                        // and implement auto-login for subsequent app launches
                         Intent logintohome= new Intent(loginActivity.this,MainActivity.class);
                         startActivity(logintohome);
                         finish();
 
                     } else {
-                        // Firebase Authentication failed, handle the error (e.g., display error message)
+                        // Firebase Authentication failed.
                         Toast.makeText(this, "User Authentication failed", Toast.LENGTH_SHORT).show();
                         finish();
                     }

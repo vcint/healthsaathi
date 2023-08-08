@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import com.vinaychitade.rsm.myhealth.R.id;
 public class MyProfilebtnActivity extends AppCompatActivity {
     Button btnedtprof,btnmyordr,btnabtus,profToHomeBtn;
     ImageView imageView2,imageView3,imageView4,profileImageView;
+    TextView txtvuser;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,6 +35,7 @@ public class MyProfilebtnActivity extends AppCompatActivity {
         btnabtus=findViewById(id.btnabtus);
         profToHomeBtn=findViewById(id.profToHomeBtn);
         profileImageView = findViewById(id.usericon1);
+        txtvuser= findViewById(id.txtvuser);
 
         // Get the current user from FirebaseAuth
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -40,6 +43,7 @@ public class MyProfilebtnActivity extends AppCompatActivity {
         if (currentUser != null) {
             // Get the user's profile photo URL
             Uri photoUrl = currentUser.getPhotoUrl();
+            txtvuser.setText("Hi, "+currentUser.getDisplayName());
 
             if (photoUrl != null) {
                 // Use Picasso (or any other image loading library) to load and display the image
@@ -99,9 +103,7 @@ public class MyProfilebtnActivity extends AppCompatActivity {
         btnmyordr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent myordr=new Intent(MyProfilebtnActivity.this,MyordrActivity.class);
-                // startActivity(myordr);
-                Intent myordr=new Intent(MyProfilebtnActivity.this,loginActivity.class);
+                Intent myordr=new Intent(MyProfilebtnActivity.this,MyordrActivity.class);
                  startActivity(myordr);
                 finish();
 
