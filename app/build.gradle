@@ -17,6 +17,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -81,5 +83,10 @@ dependencies {
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
-}
 
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    //razorpay dependencies
+    implementation 'com.razorpay:checkout:1.6.33'
+
+}

@@ -1,5 +1,7 @@
 package com.vinaychitade.rsm.myhealth;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
@@ -71,13 +74,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             if (isPendingOrder) {
                 payNowButton.setVisibility(View.VISIBLE);
+                payNowButton.setOnClickListener(v -> {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, CheckOutActivity.class);
+                    context.startActivity(intent);
+
+                });
             } else {
                 payNowButton.setVisibility(View.GONE);
             }
 
-            payNowButton.setOnClickListener(v -> {
-                // Implement the payment functionality and move the order to "Shipped Orders"
-            });
+
+
+
+            }
+
+
         }
     }
-}
