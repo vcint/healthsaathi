@@ -17,10 +17,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\vc\\Android apk keys\\myhealthapk1.jks') // Path to your release keystore file
+            storePassword 'Vinay@2023'          // Keystore password
+            keyAlias 'key1'                    // Key alias
+            keyPassword 'Vinay@2023'              // Key password
+        }
+    }
+
 
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
