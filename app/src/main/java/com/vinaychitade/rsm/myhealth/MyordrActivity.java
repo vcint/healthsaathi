@@ -25,6 +25,7 @@ import java.util.List;
 public class MyordrActivity extends AppCompatActivity {
     ImageView imageView2, imageView3, imageView4;
     Button Backbtn;
+    String pushId;
     private DatabaseReference ordersRef;
     private List<Order> ordersList;
     private RecyclerView recyclerView;
@@ -57,7 +58,7 @@ public class MyordrActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         ordersList = new ArrayList<>();
-        orderAdapter = new OrderAdapter(ordersList);
+        orderAdapter = new OrderAdapter(ordersList,this);
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -107,7 +108,8 @@ public class MyordrActivity extends AppCompatActivity {
                             String userId = orderSnapshot.child("userId").getValue(String.class);
                             String imageUrl = orderSnapshot.child("imageUrl").getValue(String.class);
                             boolean isPendingOrder = false; // Assuming orders are not pending
-                            ordersList.add(new Order(userId, imageUrl, isPendingOrder));
+                            String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                            ordersList.add(new Order(userId, imageUrl, isPendingOrder,orderId,pushId));
                         }
                         orderAdapter.notifyDataSetChanged();
                         retrievePendingOrders();
@@ -131,7 +133,9 @@ public class MyordrActivity extends AppCompatActivity {
                             String userId = orderSnapshot.child("userId").getValue(String.class);
                             String imageUrl = orderSnapshot.child("imageUrl").getValue(String.class);
                             boolean isPendingOrder = true; // Orders from pending_orders collection
-                            ordersList.add(0, new Order(userId, imageUrl, isPendingOrder)); // Add at the beginning
+                            String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                            String pushId = orderSnapshot.getKey();
+                            ordersList.add(0, new Order(userId, imageUrl, isPendingOrder,orderId,pushId)); // Add at the beginning
                         }
                         orderAdapter.notifyDataSetChanged();
                     }
