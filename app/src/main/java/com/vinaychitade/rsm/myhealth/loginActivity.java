@@ -68,7 +68,7 @@ public class loginActivity extends AppCompatActivity {
 
         // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // Use your Web Client ID
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -95,7 +95,7 @@ public class loginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String displayName = account.getDisplayName();
             Toast.makeText(this, "hello "+displayName, Toast.LENGTH_SHORT).show();
-            // Google Sign-In successful, get the user's Google ID token
+            // Google Sign-In successful.
             String idToken = account.getIdToken();
             firebaseAuthWithGoogle(idToken);
 
@@ -113,7 +113,7 @@ public class loginActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Firebase Authentication successful, proceed to the next screen
+                        // Firebase Authentication successful
                         Intent logintohome= new Intent(loginActivity.this,MainActivity.class);
                         startActivity(logintohome);
                         finish();

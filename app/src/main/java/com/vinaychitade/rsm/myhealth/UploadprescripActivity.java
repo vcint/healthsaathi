@@ -79,54 +79,43 @@ public class UploadprescripActivity extends AppCompatActivity {
     private void uploadImageToRealtimeDatabase(Uri imageUri) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-
-        // ... Your existing code for image upload ...
         String imageFileName = "image_" + System.currentTimeMillis() + ".jpg";
         StorageReference imageRef = storageRef.child("images/" + imageFileName);
 
         imageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Image upload successful, get the download URL
+                    // get the download URL
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        // Save the download URL to Realtime Database
+                        // Save the download URL to Database
                         String downloadUrl = uri.toString();
 
-                        // Get the current user's ID, name, and date of birth
                         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                         if (currentUser != null) {
                             String userId = currentUser.getEmail();
                             String userName = currentUser.getDisplayName();
-                            //String dateOfBirth = ""; // You need to set this value if you have stored the user's date of birth during registration
 
-                            // Save the user data and image URL to Realtime Database
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
                             DatabaseReference ordersRef = databaseRef.child("orders").push();
                             ordersRef.child("userId").setValue(userId);
                             ordersRef.child("userName").setValue(userName);
-                            //ordersRef.child("dateOfBirth").setValue(dateOfBirth);
                             ordersRef.child("imageUrl").setValue(downloadUrl)
                                     .addOnSuccessListener(aVoid -> {
-                                        // Data saved successfully
                                         Toast.makeText(this, " Order Placed successfully", Toast.LENGTH_SHORT).show();
                                         Intent ordersuccess= new Intent(UploadprescripActivity.this,UploadedImage.class);
                                         startActivity(ordersuccess);
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
-                                        // Handle any errors while saving the data
                                         Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         } else {
-                            // User not logged in, handle the case
                             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(e -> {
-                        // Handle any errors while getting the download URL
                         Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
                 })
                 .addOnFailureListener(e -> {
-                    // Handle any errors while uploading the image
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
         }

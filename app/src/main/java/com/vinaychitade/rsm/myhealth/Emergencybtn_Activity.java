@@ -110,7 +110,7 @@ public class Emergencybtn_Activity extends AppCompatActivity {
                 // Send the SMS message with the user's location
                 sendSMSMessage();
 
-                // Start the dispatchedAmbulance activity (optional)
+                // Start the dispatchedAmbulance activity
                 Intent todispambulance = new Intent(Emergencybtn_Activity.this, dispatchedAmbulance.class);
                 startActivity(todispambulance);
                 finish();
@@ -148,7 +148,7 @@ public class Emergencybtn_Activity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
             } else {
-                // Handle permission denied case (optional)
+                //permission denied case
                 Toast.makeText(this, "Permission denied. Cannot send SMS.", Toast.LENGTH_SHORT).show();
             }
         }

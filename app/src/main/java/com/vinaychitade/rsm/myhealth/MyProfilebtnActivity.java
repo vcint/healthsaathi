@@ -46,18 +46,17 @@ public class MyProfilebtnActivity extends AppCompatActivity {
             txtvuser.setText("Hi, "+currentUser.getDisplayName());
 
             if (photoUrl != null) {
-                // Use Picasso (or any other image loading library) to load and display the image
+                //  Picasso to load and display the image
                 Picasso.get().load(photoUrl.toString()).into(profileImageView);
             } else {
-                // If the user does not have a profile photo, you can set a default image or hide the ImageView
+                // If the user does not have a profile photo
                 profileImageView.setImageResource(R.drawable.useract);
             }
         }else {
-            // If the user is not logged in, you can set a default image or hide the ImageView
             profileImageView.setImageResource(R.drawable.useract);
         }
 
-        ////
+
         profToHomeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

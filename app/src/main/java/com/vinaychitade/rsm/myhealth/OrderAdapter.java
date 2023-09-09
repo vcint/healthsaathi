@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +41,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private List<Order> orderList;
     private Context context;
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public OrderAdapter(List<Order> orderList, Context context) {
         this.orderList = orderList;
@@ -58,14 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
-
-        String userId = order.getUserId();
-        String imageUrl = order.getImageUrl();
-        boolean isPendingOrder = order.isPending();
-        String orderId = order.getOrderId();
-        String pushId = order.getPushId(); // Retrieve the pushId
-
-        holder.bindOrderData(userId, imageUrl, isPendingOrder,pushId,orderId);
+        holder.bindOrderData(order);
     }
 
     @Override
@@ -79,6 +72,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         private ImageView orderImageView;
         private Button payNowButton;
         private TextView orderIdTextView;
+        private TextView txtbillamt;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,27 +80,52 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             orderImageView = itemView.findViewById(R.id.orderImageView);
             payNowButton = itemView.findViewById(R.id.payNowButton);
             orderIdTextView = itemView.findViewById(R.id.orderIdTextView);
+            txtbillamt=itemView.findViewById(R.id.txtbillamt);
         }
 
-        public void bindOrderData(String userId, String imageUrl, boolean isPendingOrder, String pushId,String orderId) {
+        public void bindOrderData(Order order) {
+            String userId = order.getUserId();
+            String imageUrl = order.getImageUrl();
+            String orderId = order.getOrderId();
+            boolean isPendingOrder = order.isPending();
+            String pushId = order.getPushId();
+
             userIdTextView.setText(userId);
+            txtbillamt.setText("Bill Amount: ₹" + order.getBillAmount());
 
             Picasso.get()
                     .load(imageUrl)
                     .placeholder(R.drawable.placeholder_image)
                     .error(R.drawable.useract)
                     .into(orderImageView);
+
             orderIdTextView.setText("Order ID: " + orderId);
 
-            if (isPendingOrder) {
+            boolean isShippedOrder = order.isShipped();
+
+            if (isShippedOrder) {
+                // Set the background color to green for shipped orders
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+                payNowButton.setVisibility(View.GONE);
+            } else {
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
                 payNowButton.setVisibility(View.VISIBLE);
                 payNowButton.setOnClickListener(v -> {
-                    // Step 1: Redirect to CheckoutActivity
                     Intent intent = new Intent(context, CheckOutActivity.class);
                     context.startActivity(intent);
                     Toast.makeText(context, "push=" + pushId, Toast.LENGTH_SHORT).show();
-                    // Step 2: Send a request to your server to move the order
-                    // from Pending Orders to Shipped Orders
+                    moveOrderToShipped(pushId);
+                });
+            }
+
+
+            if (isPendingOrder) {
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.grey));
+                payNowButton.setVisibility(View.VISIBLE);
+                payNowButton.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, CheckOutActivity.class);
+                    context.startActivity(intent);
+                    Toast.makeText(context, "push=" + pushId, Toast.LENGTH_SHORT).show();
                     moveOrderToShipped(pushId);
                 });
             } else {
@@ -114,17 +133,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             }
         }
 
-        private void moveOrderToShipped(String pushId) { // Change parameter name to pushId
-            // Create an AsyncTask to perform the HTTP request in the background
+        private void moveOrderToShipped(String pushId) {
+            //AsyncTask to perform the HTTP request in the background
             if (pushId != null && !pushId.isEmpty()) {
                 new AsyncTask<String, Void, Void>() {
                     @Override
                     protected Void doInBackground(String... params) {
                         try {
-                            String pushId = params[0]; // Change variable name to pushId
-                            Log.d("MyAsyncTask", "Async pushId: " + pushId); // Update log message
-
-                            // Create a JSON object with the pushId
+                            String pushId = params[0];
+                            Log.d("MyAsyncTask", "Async pushId: " + pushId);
                             JSONObject jsonObject = new JSONObject();
                             jsonObject.put("pushId", pushId);
 
@@ -136,15 +153,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                                     .url("https://healthsaathi.onrender.com/shippedOrder")
                                     .post(requestBody)
                                     .build();
-
-                            // Send the HTTP request
                             Response response = client.newCall(request).execute();
-
-                            // Check the response code
                             if (response.isSuccessful()) {
-                                // Success: The order has been moved
                             } else {
-                                // Handle the error
                             }
 
                         } catch (Exception e) {
@@ -152,12 +163,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                         }
                         return null;
                     }
-                }.execute(pushId); // Pass pushId as a parameter
+                }.execute(pushId);
             } else {
-                // Handle the case where pushId is empty or null
             }
         }
-
-
     }
 }

@@ -97,8 +97,7 @@ public class MyordrActivity extends AppCompatActivity {
     }
 
     private void retrieveOrders() {
-        String currentUserEmail = getCurrentUserEmail(); // Replace with your method to get current user's email
-
+        String currentUserEmail = getCurrentUserEmail();
         ordersRef.child("orders").orderByChild("userId").equalTo(currentUserEmail)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -107,9 +106,12 @@ public class MyordrActivity extends AppCompatActivity {
                         for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
                             String userId = orderSnapshot.child("userId").getValue(String.class);
                             String imageUrl = orderSnapshot.child("imageUrl").getValue(String.class);
-                            boolean isPendingOrder = false; // Assuming orders are not pending
+                            boolean isPendingOrder = false;
+                            boolean isShippedOrder=false;
                             String orderId = orderSnapshot.child("orderId").getValue(String.class);
-                            ordersList.add(new Order(userId, imageUrl, isPendingOrder,orderId,pushId));
+                            String billAmount = orderSnapshot.child("billAmount").getValue(String.class);
+
+                            ordersList.add(new Order(userId, imageUrl, isPendingOrder,isShippedOrder,orderId,pushId,billAmount));
                         }
                         orderAdapter.notifyDataSetChanged();
                         retrievePendingOrders();
@@ -123,7 +125,7 @@ public class MyordrActivity extends AppCompatActivity {
     }
 
     private void retrievePendingOrders() {
-        String currentUserEmail = getCurrentUserEmail(); // Replace with your method to get current user's email
+        String currentUserEmail = getCurrentUserEmail();
 
         ordersRef.child("pending_orders").orderByChild("userId").equalTo(currentUserEmail)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -132,10 +134,39 @@ public class MyordrActivity extends AppCompatActivity {
                         for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
                             String userId = orderSnapshot.child("userId").getValue(String.class);
                             String imageUrl = orderSnapshot.child("imageUrl").getValue(String.class);
-                            boolean isPendingOrder = true; // Orders from pending_orders collection
+                            boolean isPendingOrder = true;
+                            boolean isShippedOrder=false;
                             String orderId = orderSnapshot.child("orderId").getValue(String.class);
                             String pushId = orderSnapshot.getKey();
-                            ordersList.add(0, new Order(userId, imageUrl, isPendingOrder,orderId,pushId)); // Add at the beginning
+                            String billAmount = orderSnapshot.child("billAmount").getValue(String.class);
+                            ordersList.add(0, new Order(userId, imageUrl, isPendingOrder,isShippedOrder,orderId,pushId,billAmount)); // Add at the beginning
+                        }
+                        orderAdapter.notifyDataSetChanged();
+                        retrieveShippedOrders();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+    }
+    private void retrieveShippedOrders() {
+        String currentUserEmail = getCurrentUserEmail();
+
+        ordersRef.child("shipped_orders").orderByChild("userId").equalTo(currentUserEmail)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
+                            String userId = orderSnapshot.child("userId").getValue(String.class);
+                            String imageUrl = orderSnapshot.child("imageUrl").getValue(String.class);
+                            boolean ispendingOrder = false;
+                            boolean isShippedOrder=true;
+                            String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                            String pushId = orderSnapshot.getKey();
+                            String billAmount = orderSnapshot.child("billAmount").getValue(String.class);
+                            ordersList.add(0, new Order(userId, imageUrl, ispendingOrder,isShippedOrder,orderId,pushId,billAmount)); // Add at the beginning
                         }
                         orderAdapter.notifyDataSetChanged();
                     }

@@ -6,13 +6,17 @@ public class Order {
     private boolean pending;
     private String orderId;
     private String pushId;
+    private boolean shipped;
+    private String billAmount;
 
-    public Order(String userId, String imageUrl, boolean pending, String orderId,String pushId) {
+    public Order(String userId, String imageUrl, boolean pending,boolean shipped, String orderId,String pushId,String billAmount) {
         this.userId = userId;
         this.imageUrl = imageUrl;
         this.pending = pending;
-        this.orderId = orderId; // Set the orderId in the constructor
+        this.orderId = orderId;
         this.pushId=pushId;
+        this.shipped=shipped;
+        this.billAmount = billAmount;
 
     }
 
@@ -27,6 +31,7 @@ public class Order {
     public boolean isPending() {
         return pending;
     }
+    public boolean isShipped(){return shipped;}
 
     public String getOrderId() {
         return orderId;
@@ -36,12 +41,15 @@ public class Order {
         return pushId;
     }
 
+    public String getBillAmount() {
+        return billAmount;
+    }
 
-    // Add a setter method for orderId
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
     public void setPushId(String pushId) {
         this.pushId = pushId;
     }
+
 }
