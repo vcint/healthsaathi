@@ -104,7 +104,7 @@ public class Emergencybtn_Activity extends AppCompatActivity {
             if (mLastLocation != null) {
                 double lat = mLastLocation.getLatitude();
                 double lon = mLastLocation.getLongitude();
-                mapurl = mapurl + lon + "," + lat;
+                mapurl = mapurl + lat + "," + lon;
                 message = mapurl;
 
                 // Send the SMS message with the user's location
