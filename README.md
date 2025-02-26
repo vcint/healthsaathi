@@ -1,5 +1,3 @@
-![HealthSaathi](https://github.com/user-attachments/assets/4203b2a8-5247-4996-a9d6-7f88346aa4ae)
-
 # HealthSaathi  
 **A Simple Healthcare App for Senior Citizens**
 
@@ -7,6 +5,7 @@
 HealthSaathi is an easy-to-use Android app designed for senior citizens to simplify healthcare. It helps users order medicines by uploading prescriptions, call their doctor with a single tap, and share their location instantly during emergencies.
 
 We built this app with simplicity and usability in mind, ensuring that seniors can access essential healthcare services without any hassle.
+![HealthSaathi](https://github.com/user-attachments/assets/4203b2a8-5247-4996-a9d6-7f88346aa4ae)
 
 ---
 
