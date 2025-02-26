@@ -1,3 +1,4 @@
+![HealthSaathi](https://github.com/user-attachments/assets/4203b2a8-5247-4996-a9d6-7f88346aa4ae)
 
 # HealthSaathi  
 **A Simple Healthcare App for Senior Citizens**
